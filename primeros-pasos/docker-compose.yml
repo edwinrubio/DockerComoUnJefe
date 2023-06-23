@@ -1,0 +1,37 @@
+version: '3.1'
+services:
+        nginx:
+          image: allfait/primeros-pasos:1.0.0
+          ports:
+            - "80:80"
+          depends_on:
+            - db
+          networks:
+            - network-connect
+        db:
+          image: mysql
+          environment:
+            MYSQL_ROOT_PASSWORD: allfaitroot
+            MYSQL_USER: allfait
+            MYSQL_PASSWORD: p4assword
+          ports:
+            - "3306:3306"
+          volumes:
+            - db-data:/var/lib/mysql
+          networks:
+            - network-connect
+        phpmyadmin:
+          image: phpmyadmin/phpmyadmin
+          ports:
+            - 8000:80
+          environment:
+            MYSQL_USER: allfait
+            MYSQL_PASSWORD: p4assword
+            MYSQL_ROOT_PASSWORD: allfaitroot
+          networks:
+            - network-connect
+volumes:
+  db-data:
+networks:
+  network-connect:
+    driver: bridge
